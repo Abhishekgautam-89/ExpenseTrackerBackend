@@ -47,6 +47,10 @@ app.use('/',getUser);
 app.use('/',buyPremium);
 app.use('/premium', premium);
 app.use('/password', resetPassword);
+app.use((req,res)=>{
+    // console.log(req.url)
+    res.sendFile(path.join(__dirname, `views/${req.url}`))
+})
 
 User.hasMany(Expenses);
 Expenses.belongsTo(User);

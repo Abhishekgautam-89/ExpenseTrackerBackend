@@ -6,10 +6,14 @@ const addUser = (req,res,next)=>{
     const userName = req.body.userName;
     const userEmail= req.body.userEmail;
     const userPassword = req.body.userPassword;
-    const salt=process.env.SALT;
+    const salt= 10;
+    
+    // console.log(userPassword);
     try{    
         bcrypt.hash(userPassword, salt, async(err, hash)=>{
             console.log(err);
+            // throw new Error(err)
+            console.log('hash>>>',hash);
             const [user, created] = await User.findOrCreate({
                 where:{email: userEmail},
                 defaults:{
@@ -27,8 +31,8 @@ const addUser = (req,res,next)=>{
         
         
     }
-    catch(err){
-        console.log(err);
+    catch(e){
+        console.error(e);
     }
 }
 
