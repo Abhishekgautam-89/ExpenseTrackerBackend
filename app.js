@@ -6,9 +6,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-const helmet = require('helmet'); // to secure hhtp headers
-const morgan = require('morgan'); // to configure logg
-const https = require('https');
+// const helmet = require('helmet'); // to secure http headers
+// const morgan = require('morgan'); // to configure logg
+// const https = require('https');
 
 const path = require('path');
 const fs = require('fs');
@@ -33,11 +33,11 @@ const accessLog = fs.createWriteStream(path.join(__dirname, 'access.log'), {flag
 
 
 // console.log(process.env)
-const privateKey = fs.readFileSync('server.key');
-const certificate = fs.readFileSync('server.cert');
+// const privateKey = fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 
-app.use(helmet());
-app.use(morgan('combined', {stream: accessLog}))
+// app.use(helmet());
+// app.use(morgan('combined', {stream: accessLog}))
 
 app.use(bodyparser.json({extended:false}))
 app.use(cors());
@@ -47,9 +47,13 @@ app.use('/',getUser);
 app.use('/',buyPremium);
 app.use('/premium', premium);
 app.use('/password', resetPassword);
-app.use((req,res)=>{
-    // console.log(req.url)
-    res.sendFile(path.join(__dirname, `views/${req.url}`))
+// app.use('/',(req,res,next)=>{
+// console.log(req.url)
+//     res.sendFile(path.join(__dirname, `views/views/index.html`))    
+// })
+app.use((req, res)=>{
+    console.log(req.url)
+    res.sendFile(path.join(__dirname, `view/${req.url}`))
 })
 
 User.hasMany(Expenses);
@@ -67,7 +71,7 @@ sequelize
 .then((result)=>{
     // console.log(result);
     // https.createServer({key: privateKey, cert: certificate}, app).listen(process.env.PORT||3000);
-    app.listen(process.env.PORT||3000) 
+    app.listen(process.env.PORT||4000) 
 })
 .catch(err=>console.log(err));
 

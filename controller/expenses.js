@@ -17,7 +17,7 @@ exports.addExpense = async(req, res, next)=>{
         res.status(200).json({newExpense:data})
     }
     catch(err){
-        console.log(err);
+        console.log("addExpense>>",err);
         res.status(500).json({error:err})
     }
 }
@@ -29,7 +29,12 @@ exports.getExpense = async (req, res, next)=>{
         page=req.query.page||1;
         // console.log(page);
 
-        const itemPerPage = parseInt(req.header("page")||2);
+        const itemPerPage = parseInt(req.header("page"))||10;
+        // let itemPerPage=10;
+        // if (req.header('page')){
+        //     itemPerPage = parseInt(req.header('page'));
+        // }
+       
         // console.log("page>>>",itemPerPage)
         const totalExpenseList = await user.countExpenses();        
         const data = await user.getExpenses({
@@ -49,7 +54,7 @@ exports.getExpense = async (req, res, next)=>{
         })
     }
     catch(err){
-        console.log(err);
+        console.log("getExpense>>",err);
         res.status(500).json({error:err})
     }
 }
@@ -63,7 +68,7 @@ exports.deleteExpense = async(req,res,next)=>{
         res.sendStatus(201);
     }
     catch(err){
-        console.log(err);
+        console.log("delExpense>>",err);
         res.status(500).json({error:err})
     }
 }

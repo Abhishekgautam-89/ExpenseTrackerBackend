@@ -7,16 +7,19 @@ const leaderBoardButton = document.getElementById("leaderboard");
 const download = document.getElementById("download");
 var itemsPerPage = document.getElementById('itemsPerPage');
 
+import {default as ipAddress} from './exporter.js'
+
 download.addEventListener("click", downloadReport);
 rzb.addEventListener("click", buyPremium);
 leaderBoardButton.addEventListener("click", leaderBoard);
 
 logOut.addEventListener("click", () => {
   localStorage.removeItem("token");
-  window.location.href = "../view/login.html";
+  window.location.href = "../views/login.html";
 });
 document.addEventListener("DOMContentLoaded", (e) => {
   let page = 1;
+  // localStorage.setItem("page", 20); 
   getExpense(page);
 });
 
@@ -59,7 +62,7 @@ submit.addEventListener("click", async (e) => {
   addDatatoList(obj);
   try {
     const token = localStorage.getItem("token");
-    let postObject = await axios.post("http://65.0.105.193:3000/addexpense", obj, {
+    let postObject = await axios.post(`${ipAddress}/addexpense`, obj, {
       headers: { Authorization: token },
     });
     // console.log(postObject.data);
@@ -111,7 +114,7 @@ async function deleteList(id) {
   try {
     const token = localStorage.getItem("token");
 
-    const delObj = await axios.delete(`http://65.0.105.193:3000/delete/${id}`, {
+    const delObj = await axios.delete(`${ipAddress}/delete/${id}`, {
       headers: { Authorization: token },
     });
     li.remove();
@@ -134,7 +137,7 @@ async function editList(id) {
     console.log(obj.id);
     const updateData = await axios({
       method: "put",
-      url: `http://65.0.105.193:3000/edit/${id}`,
+      url: `${ipAddress}/edit/${id}`,
       data: objec,
     });
     addDatatoList(updateData);
@@ -147,13 +150,14 @@ async function editList(id) {
 async function getExpense(page) {
   const token = localStorage.getItem("token");
   const decodedToken = parseJwt(token);
+  
   // console.log(decodedToken);
   //to get no.of rows per page
    const value=localStorage.getItem("page")
   // console.log(value);
   try {
     const getObject = await axios.get(
-      `http://65.0.105.193:3000/getexpense?page=${page}`,
+      `${ipAddress}/getexpense?page=${page}`,
       { headers: { Authorization: token, page:value } }
     );
     // console.log(getObject.data.listOfUrls);
@@ -201,7 +205,7 @@ itemsPerPageOptions.addEventListener('change',()=>{
 async function buyPremium() {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://65.0.105.193:3000/getPremium", {
+    const res = await axios.get(`${ipAddress}/getPremium`, {
       headers: { Authorization: token },
     });
     // console.log(res);
@@ -211,7 +215,7 @@ async function buyPremium() {
       handler: async (response) => {
         // console.log(options.order_id);
         const res = await axios.post(
-          "http://65.0.105.193:3000/updateStatus",
+          `${ipAddress}/updateStatus`,
           {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,
@@ -239,7 +243,7 @@ async function leaderBoard() {
   try {
     const token = localStorage.getItem("token");
     const data = await axios.get(
-      "http://65.0.105.193:3000/premium/showLeaderboard",
+      `${ipAddress}/premium/showLeaderboard`,
       { headers: { Authorization: token } }
     );
     // console.log(data.data.expense);
@@ -289,7 +293,7 @@ function premiumFeature() {
 async function downloadReport() {
   try {
     const token = localStorage.getItem("token");
-    const data = await axios.get("http://65.0.105.193:3000/download", {
+    const data = await axios.get(`${ipAddress}/download`, {
       headers: { Authorization: token },
     });
     // console.log(data);

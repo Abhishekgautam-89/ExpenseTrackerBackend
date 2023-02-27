@@ -1,10 +1,12 @@
+
 const register = document.getElementById('register');
 const login = document.getElementById('login');
 
+import {default as ipAddress} from './exporter.js'
 
 register.addEventListener('click', (e)=>{
     e.preventDefault();
-    window.location.href="../view/signUp.html"
+    window.location.href="../views/signUp.html"
 })
 
 login.addEventListener('click', getUserDetails);
@@ -16,13 +18,13 @@ async function getUserDetails(){
         userEmail: userEmail,
         userPassword: password,
       };
-
+      
     try{
-        const details = await axios.post(`http://65.0.105.193:3000/user/login`,userDetails)
+        const details = await axios.post(`${ipAddress}/user/login`,userDetails)
         // console.log(details.data);    
         localStorage.setItem('token', details.data.token)
         window.alert('Login Successfull'); 
-        window.location.href='../view/index.html'
+        window.location.href='../views/main.html'
     }
     catch(err){
         if (err.response.status==401){

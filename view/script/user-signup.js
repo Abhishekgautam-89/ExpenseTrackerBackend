@@ -1,6 +1,6 @@
 const add = document.getElementById("submit");
 const login = document.getElementById('login');
-  
+import {default as ipAddress} from './exporter.js' 
 
 add.addEventListener("click", (e) => {
   e.preventDefault();
@@ -34,12 +34,12 @@ async function sendUserDetails() {
   console.log(password)
   try {
     const details = await axios.post(
-      "http://65.0.105.193:3000/user/signUp",
+      `${ipAddress}/user/signUp`,
       userDetails
     );
     // console.log(details.request.status);
       if (details.request.status === 201 && details.data.userExist === false) {
-        window.location.href = "../view/login.html";
+        window.location.href = "../views/login.html";
       } 
       else if (details.data.userExist == true){        
         throw new Error("User already exist");
@@ -54,5 +54,5 @@ async function sendUserDetails() {
 
 login.addEventListener('click', ()=>{
   
-  window.location.href = "../view/login.html";
+  window.location.href = "../views/login.html";
 })
