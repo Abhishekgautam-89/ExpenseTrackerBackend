@@ -28,7 +28,7 @@ const Order = require('./model/orders');
 const forgotPassword = require('./model/forgotpassword');
 const urlList = require('./model/url');
 
-const accessLog = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags:'a'});
+// const accessLog = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags:'a'});
 
 
 
@@ -71,7 +71,7 @@ sequelize
 .then((result)=>{
     // console.log(result);
     // https.createServer({key: privateKey, cert: certificate}, app).listen(process.env.PORT||3000);
-    app.listen(process.env.PORT||4000) 
+    app.listen(process.env.PORT||3000) 
 })
 .catch(err=>console.log(err));
 
